@@ -1,0 +1,236 @@
+body{
+    margin: 0;
+    font-family: 'Tajawal', sans-serif;
+}
+#main{
+    display: flex;
+    flex-direction: row;
+    max-height: 100vh;
+}
+#sidebar{
+    width: 30vw;
+    display: flex;
+    flex-direction: column;
+}
+.nav{
+    width: 100%;
+    height: 68.4px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    border-right: 1px solid #ffff;
+}
+.user-icon{
+    height: 70%; 
+    margin-left: 10px;  
+    cursor: pointer;
+}
+.chat-icon{
+    height: 30px;  
+    margin-right: 10px; 
+    color:#f0f2f5;
+    cursor: pointer;
+}
+svg{
+    height:100%;
+}
+#search{
+    height: 39px;
+    display: flex;
+    flex-direction: row;
+    padding: 8px;
+}
+.search-bar{
+    background-color: #f0f2f5;
+    border-radius: 5px;
+    width: 90%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+.search-icon{
+    color: #54656f;
+    cursor: pointer;
+}
+.search-bar > input{
+    border: none;
+    outline: none;
+    background-color: transparent;
+}
+.search-filter-icon{
+    color:#8696a0;
+    padding-left: 5%;
+    cursor: pointer;
+}
+.search-filter-icon > svg{
+    width: 20px;
+}
+.chat-list{
+    overflow-y: scroll;
+    height: 100vh;
+}
+.chat-list::-webkit-scrollbar {
+    display: none;
+}
+.chat-label{
+    display: flex;
+    flex-direction: row;
+    height: 72px;
+    width: 100%;
+    cursor: pointer;
+}
+.chat-label:hover{
+    background-color: #f0f2f5;
+}
+.chat-label-icon{
+    height: 100%; 
+    display: flex;
+    justify-content: center;
+    padding: 0 3% 0 3%;
+}
+.chat-label-content{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 75%;
+    padding: 3% 0 3% 0;
+    border-bottom: 0.1rem solid #e9edef;
+}
+.chat-label-icon > svg{
+    width: 55px;
+}
+.chat-label-content-header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 5% 0 1%;
+}
+.chat-label-content-header .firstEl{
+    font-weight: 500;
+    font-size: 18px;
+}
+.chat-label-content-header .secondEl{
+    font-weight: 300;
+    font-size: 14px;
+}
+.chat-label-content-sub{
+    padding: 0 5% 0 0;
+    color:#667781;
+    font-weight: 300;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0 7% 0 1%;
+}
+.chat-label-notif{
+    background-color: #25d366;
+    width: 20px;
+    border-radius: 100px;
+    justify-content: space-around;
+    display: flex;
+    color: white;
+}
+#chat{
+    width: 70vw;
+    min-height: 100vh;
+}
+.active-chat{
+    height: 100%;
+    width: 100%;
+    position: relative;
+}
+.active-chat-head{
+    height: 59px;
+    width: inherit;
+    position: absolute;
+    background-color: #008069;
+    color:#f0f2f5;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+.active-chat-head-user{
+    display: flex;
+    flex-direction: row;
+    padding-left: 25px;
+}
+.active-chat-head-user > svg{
+    height: 45px;
+    margin-right: 10px;
+}
+.active-chat-head-info{
+    display: flex;
+    flex-direction: column;
+}
+.active-chat-head-info > .firstEl{
+    font-weight: 500;
+    font-size: 18px;
+}
+.active-chat-head-info > .secondEl{
+    font-weight: 300;
+    font-size: 14px;
+}
+.active-chat-head-search{
+    padding-right: 25px;
+    height: 20px;
+    cursor: pointer;
+}
+.active-chat-body{
+    height: 100%;
+    background-color: #ffff;
+}
+.active-chat-bottom{
+    min-height: 62px;
+    width: inherit;
+    position: absolute;
+    bottom: 0;
+    background-color: #f0f2f5;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+.active-chat-bottom > span{
+    margin-right: 40px;
+    color: #8696a0;
+}
+.active-chat-bottom-textbar{
+    margin-left: 40px;
+    width:50vw;
+    background-color: white;
+    padding: 5px;
+    border-radius: 5px;
+}
+.active-chat-bottom-textbar > input{
+    outline: none;
+    border: none;
+    width: 100%;
+}
+.empty-chat{
+    height: 100%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.empty-chat-content{
+    color:#3b4a54;
+}
+.empty-chat-content > h1{
+    font-weight: 400;
+}
+.empty-chat-content > p{
+    color: #667781;
+    margin: 0;
+    font-weight: 300;
+}
+.empty-chat-img{
+    width: 360px;
+    height: 270px;
+    font-family: Segoe UI,Helvetica Neue,Helvetica,Lucida Grande,Arial,Ubuntu,Cantarell,Fira Sans,sans-serif;
+}
