@@ -16,14 +16,14 @@ const Chat = ()=>{
         backgroundColor : "#f0f2f5"
     }
 
-    React.useEffect(()=>{
+    /*React.useEffect(()=>{
         chatsService.get()
             .then(res=>{
                 setCurrChat(res)
                 console.log(res)
             })
             .catch(err=>console.log(err))
-    },[])
+    },[])*/
 
     const messages_to_show = currChat.map((m,curr)=>{
         let isPrimary = m.remittent===currUser ? true : false

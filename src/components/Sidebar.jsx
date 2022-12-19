@@ -1,13 +1,33 @@
+import React from "react"
 import SearchBar from "./SearchBar"
 import ChatLabel from './ChatLabel'
+import chatsService from "../services/chatsService"
+import { useSelector } from 'react-redux'
 
  const Sidebar = ()=>{
+
+    const currUser = useSelector(state=>state.currUser)
+    const [chatsData,setChatsData] = React.useState([])
+
     const nav_styles={
         backgroundColor: "#008069"
     }
     const side_styles={
         backgroundColor: "#fffff"
     }
+
+    React.useEffect(()=>{
+        chatsService.get(currUser.id)
+            .then(res=>{
+                console.log(res)
+                setChatsData(res)
+            })
+            .catch(err=>console.log(err))
+    },[])
+
+    const chatsToShow = chatsData.map((chat,curr)=>{
+        return <ChatLabel key={curr} data={chat}/>
+    })
 
     return(
         <div id="sidebar" style={side_styles}>
@@ -29,7 +49,7 @@ import ChatLabel from './ChatLabel'
             </div>
             <SearchBar />
             <div className="chat-list">
-                <ChatLabel name={"Tany"} time={"17:34"} lastText={"Huelo feo"} notifs={2}/>
+                {chatsToShow}
             </div>
         </div>
     )

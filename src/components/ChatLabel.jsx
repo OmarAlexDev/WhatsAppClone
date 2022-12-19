@@ -1,10 +1,15 @@
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { setActiveChat } from "../reducers/activeChatReducer"
 
-const ChatLabel = (props)=>{
-    const dispatch = useDispatch()
 
-    const {name,time,lastText,notifs} = props
+const ChatLabel = (props)=>{
+    const currUser=useSelector(state=>state.currUser)
+    const dispatch = useDispatch()
+    const chat = props.data
+    const notifs=0
+    const name = chat.user1.id===currUser.id ? chat.user2.username : chat.user1.username 
+    const time = chat.messages[0].time
+    const lastText = chat.messages[0].content
 
     const enableActiveChat = ()=>{
         dispatch(setActiveChat(name))
