@@ -1,6 +1,17 @@
-const ChatLabel = ()=>{
+import { useDispatch } from "react-redux"
+import { setActiveChat } from "../reducers/activeChatReducer"
+
+const ChatLabel = (props)=>{
+    const dispatch = useDispatch()
+
+    const {name,time,lastText,notifs} = props
+
+    const enableActiveChat = ()=>{
+        dispatch(setActiveChat(name))
+    }
+
     return(
-        <div className="chat-label">
+        <div className="chat-label" onClick={enableActiveChat}>
             <div className="chat-label-icon">
                 <svg viewBox="0 0 212 212" preserveAspectRatio="xMidYMid meet">
                     <path fill="#DFE5E7" d="M106.251,0.5C164.653,0.5,212,47.846,212,106.25S164.653,212,106.25,212C47.846,212,0.5,164.654,0.5,106.25 S47.846,0.5,106.251,0.5z"></path>
@@ -12,12 +23,17 @@ const ChatLabel = ()=>{
             </div>
             <div className="chat-label-content">
                 <div className="chat-label-content-header">
-                    <span className="firstEl">Tany</span>
-                    <span className="secondEl">17:34</span>
+                    <span className="firstEl">{name}</span>
+                    <span className="secondEl">{time}</span>
                 </div>
                 <div className="chat-label-content-sub">
-                    <span >Huelo feo</span>
-                    <div className="chat-label-notif">7</div>
+                    <span >{lastText}</span>
+                    {
+                        notifs>0 ?
+                        <div className="chat-label-notif">{notifs}</div>
+                        :
+                        null
+                    }            
                 </div>
             </div>
         </div>

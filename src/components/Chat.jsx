@@ -1,16 +1,59 @@
 import React from "react"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faMagnifyingGlass} from '@fortawesome/free-solid-svg-icons'
+import { useSelector, useDispatch } from "react-redux"
+import {nanoid} from "nanoid"
+
+import chatsService from "../services/chatsService"
+import Message from "./Message"
+import MessageGenerator from "./MessageGenerator"
 
 const Chat = ()=>{
-    const [activeChat, setActiveChat] = React.useState(true)
+    const activeChat = useSelector(state=>state.activeChat)
+    const currUser = useSelector(state=>state.currUser)
+    const [currChat,setCurrChat] = React.useState([])
     const styles={
         backgroundColor : "#f0f2f5"
     }
 
+    React.useEffect(()=>{
+        chatsService.get()
+            .then(res=>{
+                setCurrChat(res)
+                console.log(res)
+            })
+            .catch(err=>console.log(err))
+    },[])
+
+    const messages_to_show = currChat.map((m,curr)=>{
+        let isPrimary = m.remittent===currUser ? true : false
+        return <div key={nanoid()} className="message-row">
+                    <Message key={curr} primary={isPrimary} data={m} handleDelete={deleteMessage}/>
+                </div>
+    }).reverse()
+
+    function addMessage(res){
+        setCurrChat(prev=>prev.concat(res))
+    }
+
+    function deleteMessage(id){
+        console.log("called deletion")
+        const messageToDelete = currChat.find(m=>m.id===id)
+        chatsService.remove(id,messageToDelete)
+            .then(res=>{
+                setCurrChat(prev=>prev.map(m=>{
+                    if(m.id===id){
+                        return res
+                    }
+                    return m
+                }))
+            })
+            .catch(err=>console.log(err))
+    }
+
     return(
         <div id="chat" style={styles}>
-            {activeChat!==false ?
+            {activeChat!==null ?
                 <div className="active-chat">
                     <div className="active-chat-head">
                         <div className="active-chat-head-user">
@@ -23,28 +66,19 @@ const Chat = ()=>{
                             </svg>
                             <div className="active-chat-head-info">
                                 <span className="firstEl">
-                                    Tany
+                                    {activeChat}
                                 </span>
                                 <span className="secondEl">
-                                    últ. vez hoy a la(s) 22:16
+                                    últ. vez hoy a la(s) 17:34
                                 </span>
                             </div>
                         </div>
                         <FontAwesomeIcon className='active-chat-head-search' icon={faMagnifyingGlass}/>
                     </div>
                     <div className="active-chat-body">
-
+                            {messages_to_show}
                     </div>
-                    <div className="active-chat-bottom">
-                        <div className="active-chat-bottom-textbar">
-                            <input />
-                        </div>
-                        <span>
-                            <svg viewBox="0 0 24 24" height="24" width="24" preserveAspectRatio="xMidYMid meet" class="" version="1.1" x="0px" y="0px" enable-background="new 0 0 24 24" xml:space="preserve">
-                                <path fill="currentColor" d="M1.101,21.757L23.8,12.028L1.101,2.3l0.011,7.912l13.623,1.816L1.112,13.845 L1.101,21.757z"></path>
-                            </svg>
-                        </span>
-                    </div>
+                <MessageGenerator addMessage={addMessage}/>
                 </div> :
                 <div className="empty-chat">
                     <svg className="empty-chat-img" viewBox="0 0 303 172" width="360" preserveAspectRatio="xMidYMid meet" fill="none">

@@ -6,17 +6,19 @@ body{
     display: flex;
     flex-direction: row;
     max-height: 100vh;
+    width: 100%
 }
 #sidebar{
-    width: 30vw;
+    min-width: 300px;
     display: flex;
     flex-direction: column;
 }
 .nav{
     width: 100%;
-    height: 68.4px;
+    height: 59px;
     display: flex;
     flex-direction: row;
+    flex-shrink: 0;
     justify-content: space-between;
     align-items: center;
     border-right: 1px solid #ffff;
@@ -40,6 +42,7 @@ svg{
     display: flex;
     flex-direction: row;
     padding: 8px;
+    flex-shrink: 0;
 }
 .search-bar{
     background-color: #f0f2f5;
@@ -94,7 +97,7 @@ svg{
     display: flex;
     flex-direction: column;
     justify-content: center;
-    width: 75%;
+    width: 100%;
     padding: 3% 0 3% 0;
     border-bottom: 0.1rem solid #e9edef;
 }
@@ -134,17 +137,18 @@ svg{
     color: white;
 }
 #chat{
-    width: 70vw;
-    min-height: 100vh;
+    width: 100%;
+
 }
 .active-chat{
     height: 100%;
-    width: 100%;
     position: relative;
+    display: flex;
+    flex-direction: column;
 }
 .active-chat-head{
     height: 59px;
-    width: inherit;
+    width: 100%;
     position: absolute;
     background-color: #008069;
     color:#f0f2f5;
@@ -181,11 +185,72 @@ svg{
 }
 .active-chat-body{
     height: 100%;
+    gap:10px;
     background-color: #ffff;
+    padding: 75px 30px 75px 30px;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+    background: url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png');
+}
+.active-chat-body::-webkit-scrollbar {
+    display: none;
+}
+.message-row{
+    width: 100%;
+}
+.message{
+    display: flex;
+}
+.innerTail{
+    height: 10px;
+    color: #fff;
+}
+.outerTail{
+    height: 10px;
+    color: #d9fdd3;
+}
+.message-content{
+    color:#111b21;
+    display: flex;
+    flex-direction: row;
+    padding: 2px 10px 5px 10px;
+}
+.message-content > .text{
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+}
+.message-content > .text > svg{
+    width: 25px;
+}
+.message-content-details{
+    display: flex;
+    flex-direction: column;
+}
+.message-content-details > span{
+    text-align: end;
+    cursor: pointer;
+    color: #8696a0;
+}
+.message-content-details > .time{
+    font-weight: 300;
+    font-size: 13px;
+    color: #667781;
+    display: flex;
+    flex-direction: column-reverse;
+}
+.message-content-details > span > svg{
+    width: 13px;
 }
 .active-chat-bottom{
     min-height: 62px;
-    width: inherit;
+    width: 100%;
     position: absolute;
     bottom: 0;
     background-color: #f0f2f5;
@@ -196,7 +261,6 @@ svg{
 }
 .active-chat-bottom > span{
     margin-right: 40px;
-    color: #8696a0;
 }
 .active-chat-bottom-textbar{
     margin-left: 40px;

@@ -2,7 +2,6 @@ import SearchBar from "./SearchBar"
 import ChatLabel from './ChatLabel'
 
  const Sidebar = ()=>{
-
     const nav_styles={
         backgroundColor: "#008069"
     }
@@ -30,17 +29,7 @@ import ChatLabel from './ChatLabel'
             </div>
             <SearchBar />
             <div className="chat-list">
-                <ChatLabel />
-                <ChatLabel />
-                <ChatLabel />
-                <ChatLabel />
-                <ChatLabel />
-                <ChatLabel />
-                <ChatLabel />
-                <ChatLabel />
-                <ChatLabel />
-                <ChatLabel />
-                <ChatLabel />
+                <ChatLabel name={"Tany"} time={"17:34"} lastText={"Huelo feo"} notifs={2}/>
             </div>
         </div>
     )

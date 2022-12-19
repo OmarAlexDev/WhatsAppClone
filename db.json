@@ -1,0 +1,12 @@
+{
+  "messages": [
+    {
+      "content": "Se eliminó este mensaje",
+      "time": "2022-12-16T22:03:32.776Z",
+      "remittent": "1",
+      "destinatary": "2",
+      "active": false,
+      "id": 1
+    }
+  ]
+}
