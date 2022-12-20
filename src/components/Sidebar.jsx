@@ -2,12 +2,17 @@ import React from "react"
 import SearchBar from "./SearchBar"
 import ChatLabel from './ChatLabel'
 import chatsService from "../services/chatsService"
-import { useSelector } from 'react-redux'
+import { setCurrentUser } from "../reducers/currentUserReducer"
+import { setChats, initializeChats} from "../reducers/chatsReducer"
+import { setActiveChat } from "../reducers/activeChatReducer"
+import { useSelector, useDispatch} from 'react-redux'
 
  const Sidebar = ()=>{
-
+    const dispatch = useDispatch()
+    const activeChat=useSelector(state=>state.activeChat)
     const currUser = useSelector(state=>state.currUser)
-    const [chatsData,setChatsData] = React.useState([])
+    const chatsData = useSelector(state=>state.chats)
+    console.log(chatsData)
 
     const nav_styles={
         backgroundColor: "#008069"
@@ -17,22 +22,37 @@ import { useSelector } from 'react-redux'
     }
 
     React.useEffect(()=>{
-        chatsService.get(currUser.id)
+        dispatch(initializeChats(currUser.id))
             .then(res=>{
                 console.log(res)
-                setChatsData(res)
             })
-            .catch(err=>console.log(err))
+            .catch(err=>
+                console.log(err)
+            )
     },[])
+
+    React.useEffect(()=>{
+        if(activeChat!==null){
+            const newActiveChat = chatsData.find(c=>c.id===activeChat.id)
+            dispatch(setActiveChat(newActiveChat))
+        }
+    },[chatsData])
 
     const chatsToShow = chatsData.map((chat,curr)=>{
         return <ChatLabel key={curr} data={chat}/>
     })
 
+    function logout(){
+        window.localStorage.removeItem('loggedWAUser');
+        dispatch(setActiveChat(null))
+        dispatch(setCurrentUser(null))
+        dispatch(setChats([]))
+    }
+
     return(
         <div id="sidebar" style={side_styles}>
             <div className="nav" style={nav_styles}>
-                <span className="user-icon">
+                <span className="user-icon" onClick={logout}>
                     <svg viewBox="0 0 212 212" preserveAspectRatio="xMidYMid meet">
                         <path fill="#DFE5E7" d="M106.251,0.5C164.653,0.5,212,47.846,212,106.25S164.653,212,106.25,212C47.846,212,0.5,164.654,0.5,106.25 S47.846,0.5,106.251,0.5z"></path>
                         <g>

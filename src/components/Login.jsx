@@ -36,7 +36,10 @@ const Login = () =>{
             try{
                 const res = await loginService.post(user)
                 dispatch(setCurrentUser(res))
+                const parsedUser = JSON.stringify(res)
+                window.localStorage.setItem('loggedWAUser',parsedUser)
                 chatsService.setToken(res.token)
+                setUser({username:"",password:"",rePassword:""})
                 navigate('/')
             }catch(err){
                 console.log(err)

@@ -4,49 +4,39 @@ import {faMagnifyingGlass} from '@fortawesome/free-solid-svg-icons'
 import { useSelector, useDispatch } from "react-redux"
 import {nanoid} from "nanoid"
 
-import chatsService from "../services/chatsService"
+import { deleteMessage } from "../reducers/chatsReducer"
 import Message from "./Message"
 import MessageGenerator from "./MessageGenerator"
 
 const Chat = ()=>{
+    const dispatch = useDispatch()
     const activeChat = useSelector(state=>state.activeChat)
     const currUser = useSelector(state=>state.currUser)
-    const [currChat,setCurrChat] = React.useState([])
+    let currDestinatary = null
+    let messages_to_show = null
+    let time= null
+    let prettyTime = null 
+
     const styles={
         backgroundColor : "#f0f2f5"
     }
 
-    /*React.useEffect(()=>{
-        chatsService.get()
-            .then(res=>{
-                setCurrChat(res)
-                console.log(res)
-            })
-            .catch(err=>console.log(err))
-    },[])*/
-
-    const messages_to_show = currChat.map((m,curr)=>{
-        let isPrimary = m.remittent===currUser ? true : false
-        return <div key={nanoid()} className="message-row">
-                    <Message key={curr} primary={isPrimary} data={m} handleDelete={deleteMessage}/>
-                </div>
-    }).reverse()
-
-    function addMessage(res){
-        setCurrChat(prev=>prev.concat(res))
+    if(activeChat!==null){
+        currDestinatary = currUser.id!==activeChat.user1.id ? activeChat.user1 : activeChat.user2
+        time = new Date(activeChat.messages[activeChat.messages.length-1].time)
+        prettyTime = `${time.getHours()}:${time.getMinutes()}`
+        messages_to_show = activeChat.messages.map((m,curr)=>{
+            let isPrimary = m.remittent===currUser.id ? true : false
+            return <div key={nanoid()} className="message-row">
+                        <Message key={curr} primary={isPrimary} data={m} handleDelete={removeMessage}/>
+                    </div>
+        }).reverse()
     }
 
-    function deleteMessage(id){
-        console.log("called deletion")
-        const messageToDelete = currChat.find(m=>m.id===id)
-        chatsService.remove(id,messageToDelete)
+    function removeMessage(id){  
+        dispatch(deleteMessage(id,activeChat.id))
             .then(res=>{
-                setCurrChat(prev=>prev.map(m=>{
-                    if(m.id===id){
-                        return res
-                    }
-                    return m
-                }))
+                console.log(res)
             })
             .catch(err=>console.log(err))
     }
@@ -66,10 +56,10 @@ const Chat = ()=>{
                             </svg>
                             <div className="active-chat-head-info">
                                 <span className="firstEl">
-                                    {activeChat}
+                                    {currDestinatary.username}
                                 </span>
                                 <span className="secondEl">
-                                    últ. vez hoy a la(s) 17:34
+                                    últ. vez hoy a la(s) {prettyTime}
                                 </span>
                             </div>
                         </div>
@@ -78,7 +68,7 @@ const Chat = ()=>{
                     <div className="active-chat-body">
                             {messages_to_show}
                     </div>
-                <MessageGenerator addMessage={addMessage}/>
+                <MessageGenerator currDestinatary={currDestinatary}/>
                 </div> :
                 <div className="empty-chat">
                     <svg className="empty-chat-img" viewBox="0 0 303 172" width="360" preserveAspectRatio="xMidYMid meet" fill="none">

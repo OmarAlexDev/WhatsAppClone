@@ -8,25 +8,14 @@ const setToken = (tkn)=>{
     token = `bearer ${tkn}`
 }
 
+const getToken = ()=>{
+    return token
+}
+
 const get = async (id)=>{
     const config = {headers: {Authorization: token}}
     const response = await axios.get(`${base_url}/byUser/${id}`, config)
     return response.data
 }
 
-/*const create = async (content)=>{
-    const response = await axios.post(base_url,content)
-    return response.data
-}
-
-const remove = async(id,msg)=>{
-    const deletionMsg = {
-        ...msg,
-        active:false,
-        content: "Se eliminó este mensaje"
-    }
-    const response = await axios.put(`${base_url}/${id}`,deletionMsg)
-    return response.data
-}*/
-
-export default {get,setToken,token}
+export default {get,setToken,getToken}

@@ -8,11 +8,12 @@ const ChatLabel = (props)=>{
     const chat = props.data
     const notifs=0
     const name = chat.user1.id===currUser.id ? chat.user2.username : chat.user1.username 
-    const time = chat.messages[0].time
-    const lastText = chat.messages[0].content
+    const time = new Date(chat.messages[chat.messages.length-1].time)
+    const lastText = chat.messages[chat.messages.length-1].content
+    const prettyTime = `${time.getHours()}:${time.getMinutes()}`
 
     const enableActiveChat = ()=>{
-        dispatch(setActiveChat(name))
+        dispatch(setActiveChat(chat))
     }
 
     return(
@@ -29,7 +30,7 @@ const ChatLabel = (props)=>{
             <div className="chat-label-content">
                 <div className="chat-label-content-header">
                     <span className="firstEl">{name}</span>
-                    <span className="secondEl">{time}</span>
+                    <span className="secondEl">{prettyTime}</span>
                 </div>
                 <div className="chat-label-content-sub">
                     <span >{lastText}</span>
