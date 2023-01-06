@@ -51,8 +51,7 @@ const initializeChats = (id)=>{
 
 const postMessage = (content,chatId)=>{
     return async dispatch =>{
-        const response = await messageService.create(content)
-        console.log(response)  
+        const response = await messageService.create(content)  
         if(chatId!==null){
             const chatObject ={
                 chatId: chatId,

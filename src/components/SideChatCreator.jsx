@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux"
 import { setCurrentSideElement } from "../reducers/sideBarReducer"
 import { obtainUsers } from "../reducers/usersReducer";
 import ContactLabel from "./ContactLabel";
-
+import EmptySearch from "./EmptySearch";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faMagnifyingGlass} from '@fortawesome/free-solid-svg-icons'
 
@@ -57,9 +57,7 @@ const SideChatCreator = () => {
                     {usersToShow}
                 </div> 
                 : 
-                <div className="empty-contact-list">
-                    <span>No se encontraron resultados para '{userFilter}'</span>
-                </div>
+                <EmptySearch content={`No se encontraron resultados para ${userFilter}`}/>
             }
         </div>
     )

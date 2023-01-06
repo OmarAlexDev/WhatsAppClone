@@ -4,6 +4,7 @@ import { currUserReducer } from './reducers/currentUserReducer'
 import { chatsReducer } from './reducers/chatsReducer'
 import { sideBarReducer } from './reducers/sideBarReducer'
 import { userReducer } from './reducers/usersReducer'
+import { chatFilterReducer } from './reducers/chatFilterReducer'
 
 const store = configureStore({
     reducer:{
@@ -11,7 +12,8 @@ const store = configureStore({
         currUser: currUserReducer,
         chats: chatsReducer,
         users: userReducer,
-        sideBar: sideBarReducer
+        sideBar: sideBarReducer,
+        chatFilter: chatFilterReducer
     }
 })
 

@@ -11,7 +11,6 @@ import MessageGenerator from "./MessageGenerator"
 const Chat = ()=>{
     const dispatch = useDispatch()
     const activeChat = useSelector(state=>state.activeChat)
-    console.log("activeChat updated for: ", activeChat)
     const currUser = useSelector(state=>state.currUser)
     let currDestinatary = null
     let messages_to_show = null

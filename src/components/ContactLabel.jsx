@@ -6,7 +6,7 @@ const ContactLabel = (props)=>{
     const dispatch = useDispatch()
     const currUser = useSelector(state=>state.currUser)
     const chatsData = useSelector(state=>state.chats)
-    const name = props.data.username
+    const {username,state} = props.data
 
     function enableActiveChat(){
         const existentChat = chatsData.find(c=> c.user1.id === props.data.id || c.user2.id === props.data.id)
@@ -39,10 +39,10 @@ const ContactLabel = (props)=>{
             </div>
             <div className="chat-label-content">
                 <div className="chat-label-content-header">
-                    <span className="firstEl">{name}</span>
+                    <span className="firstEl">{username}</span>
                 </div>
                 <div className="chat-label-content-sub">
-                    <span >Disponible</span>      
+                    <span >{state}</span>      
                 </div>
             </div>
         </div>

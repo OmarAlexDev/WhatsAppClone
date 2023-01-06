@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import SearchBar from "./SearchBar";
 import ChatLabel from './ChatLabel'
+import EmptySearch from "./EmptySearch";
 
 import { setCurrentUser } from "../reducers/currentUserReducer"
 import { setCurrentSideElement } from "../reducers/sideBarReducer";
@@ -14,8 +15,7 @@ const SideChats = ()=>{
     const activeChat=useSelector(state=>state.activeChat)
     const currUser = useSelector(state=>state.currUser)
     const chatsData = useSelector(state=>state.chats)
-    console.log(chatsData)
-
+    const chatFilter = useSelector(state=>state.chatFilter)
     const nav_styles={
         backgroundColor: "#008069"
     }
@@ -40,8 +40,13 @@ const SideChats = ()=>{
         }
     },[chatsData])
 
-    const chatsToShow = chatsData.map((chat,curr)=>{
-        return <ChatLabel key={curr} data={chat}/>
+    const chatsToShow = chatsData.filter(chat=>{
+        let otherUser = chat.user1.id===currUser.id ? chat.user2.username : chat.user1.username
+        if (otherUser.includes(chatFilter)){ 
+            return chat
+        }
+    }).map((chat,curr)=>{  
+            return <ChatLabel key={curr} data={chat}/>
     })
 
     function logout(){
@@ -78,10 +83,13 @@ const SideChats = ()=>{
                     </svg>
                 </span>
             </div>
-            <SearchBar />
-            <div className="chat-list">
-                {chatsToShow}
-            </div>
+            <SearchBar/>
+            {chatsToShow.length>0 ?
+                <div className="chat-list">
+                    {chatsToShow}
+                </div>
+                : <EmptySearch content={'No se encontró ningún chat.'}/>
+            }
         </>
     )
 }
