@@ -50,6 +50,12 @@ body{
 }
 .login-hero{
     width: 55%;
+    display: flex;
+    flex-direction: column;
+    place-content: center;
+}
+.login-hero > svg{
+    width: 100%;
 }
 .login-card{
     display: flex;
@@ -109,10 +115,59 @@ body{
     width: 100%,
 }
 #sidebar{
-    min-width: 300px;
+    min-width: 400px;
     display: flex;
     flex-direction: column;
+    position: relative;
 }
+#sideInfo{
+    background-color: #fff;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transition: all .5s;
+}
+#sideChatInfo{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+#sideChatCreator{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    height: 100%;
+}
+.contact-list{
+    overflow-y: scroll;
+    max-height: 100vh;
+}
+.contact-list::-webkit-scrollbar {
+    display: none;
+}
+.empty-contact-list{
+    height: 100%;
+    background-color: #f0f2f5;
+    display: flex;
+    justify-content: center;
+    padding-top: 20%;
+    color: #8696a0;
+}
+.empty-contact-list > span{
+    max-width: 75%;
+}
+.arrow-icon{
+    margin-left: 20px;
+    margin-right: 20px;
+    cursor: pointer;
+}
+.arrow-icon > svg{
+    height:25px;
+}
+.sideChatInfo-user-icon > svg{
+    height: 150px;
+}
+
 .nav{
     width: 100%;
     height: 59px;
@@ -122,6 +177,18 @@ body{
     justify-content: space-between;
     align-items: center;
     border-right: 1px solid #ffff;
+    background-color: #008069;
+}
+.nav.side{
+    height: 108px;
+    justify-content: start;
+    color: #fff;
+    font-size: 10px;
+    box-sizing: border-box; 
+    padding-top: 45px;
+}
+.nav.side >h1{
+    font-weight: 600;
 }
 .user-icon{
     height: 70%; 
@@ -144,6 +211,13 @@ svg{
     padding: 8px;
     flex-shrink: 0;
 }
+#searchContacts{
+    height: 39px;
+    display: flex;
+    flex-direction: row;
+    padding: 8px;
+    flex-shrink: 0;
+}
 .search-bar{
     background-color: #f0f2f5;
     border-radius: 5px;
@@ -153,14 +227,22 @@ svg{
     justify-content: space-around;
     align-items: center;
 }
+.search-bar.side{
+    width: 100%;
+    height: 33px;
+}
 .search-icon{
     color: #54656f;
     cursor: pointer;
+}
+.search-icon{
+    height: 14px;
 }
 .search-bar > input{
     border: none;
     outline: none;
     background-color: transparent;
+    width: 70%;
 }
 .search-filter-icon{
     color:#8696a0;
@@ -200,6 +282,12 @@ svg{
     width: 100%;
     padding: 3% 0 3% 0;
     border-bottom: 0.1rem solid #e9edef;
+    transition: all .5s;
+}
+.chat-label-content.side{
+    color:#008069;
+    font-size: 18px;
+    padding-left: 25px;
 }
 .chat-label-icon > svg{
     width: 55px;
@@ -212,7 +300,7 @@ svg{
     padding: 0 5% 0 1%;
 }
 .chat-label-content-header .firstEl{
-    font-weight: 500;
+    font-weight: 400;
     font-size: 18px;
 }
 .chat-label-content-header .secondEl{
@@ -228,6 +316,16 @@ svg{
     justify-content: space-between;
     padding: 0 7% 0 1%;
 }
+.chat-label-content-sub-info{
+    display: flex;
+    flex-direction: row;
+    gap:5px;
+    transition: all .5s;
+}
+.chat-label-content-sub-info > svg{
+    cursor: pointer;
+    color:#8696a0;
+}
 .chat-label-notif{
     background-color: #25d366;
     width: 20px;
@@ -238,7 +336,6 @@ svg{
 }
 #chat{
     width: 100%;
-
 }
 .active-chat{
     height: 100%;

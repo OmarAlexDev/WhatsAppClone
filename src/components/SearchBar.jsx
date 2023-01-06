@@ -8,7 +8,7 @@ const SearchBar = () => {
         <div id="search">
             <div className="search-bar">
                 <FontAwesomeIcon className='search-icon' icon={faMagnifyingGlass}/>
-                <input value={filterChat} onChange={(event)=>setFilterChat(event.target.value)}/>
+                <input placeholder='Busca un chat o inicia uno nuevo' value={filterChat} onChange={(event)=>setFilterChat(event.target.value)}/>
             </div>
             <div className="search-filter-icon">
                 <svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" version="1.1" x="0px" y="0px">

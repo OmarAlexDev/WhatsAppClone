@@ -20,7 +20,7 @@ const MessageGenerator = (props)=>{
             remittent:currUser.username,
             destinatary:currDestinatary.username
         }
-        dispatch(postMessage(newMsg,activeChat.id))
+        dispatch(postMessage(newMsg, activeChat.id || null))
             .then((res)=>{
                 setMessage('')
             })

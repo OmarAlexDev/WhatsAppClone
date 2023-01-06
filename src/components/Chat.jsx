@@ -11,6 +11,7 @@ import MessageGenerator from "./MessageGenerator"
 const Chat = ()=>{
     const dispatch = useDispatch()
     const activeChat = useSelector(state=>state.activeChat)
+    console.log("activeChat updated for: ", activeChat)
     const currUser = useSelector(state=>state.currUser)
     let currDestinatary = null
     let messages_to_show = null
@@ -23,8 +24,8 @@ const Chat = ()=>{
 
     if(activeChat!==null){
         currDestinatary = currUser.id!==activeChat.user1.id ? activeChat.user1 : activeChat.user2
-        time = new Date(activeChat.messages[activeChat.messages.length-1].time)
-        prettyTime = `${time.getHours()}:${time.getMinutes()}`
+        time = activeChat.messages.length>0 ? new Date(activeChat.messages[activeChat.messages.length-1].time) : null
+        prettyTime = time!==null ? `${time.getHours()}:${time.getMinutes()}` : null
         messages_to_show = activeChat.messages.map((m,curr)=>{
             let isPrimary = m.remittent===currUser.id ? true : false
             return <div key={nanoid()} className="message-row">
@@ -59,7 +60,7 @@ const Chat = ()=>{
                                     {currDestinatary.username}
                                 </span>
                                 <span className="secondEl">
-                                    últ. vez hoy a la(s) {prettyTime}
+                                    {prettyTime ? `últ. vez hoy a la(s) ${prettyTime}` : `Disponible`}
                                 </span>
                             </div>
                         </div>

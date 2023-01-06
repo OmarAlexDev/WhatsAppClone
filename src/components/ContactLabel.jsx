@@ -1,35 +1,29 @@
-import React from "react"
-import { useDispatch, useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
 import { setActiveChat } from "../reducers/activeChatReducer"
 import { setCurrentSideElement } from "../reducers/sideBarReducer"
 
-
-const ChatLabel = (props)=>{
-    const currUser=useSelector(state=>state.currUser)
+const ContactLabel = (props)=>{
     const dispatch = useDispatch()
-    const chat = props.data
-    const notifs=0
-    const name = chat.user1.id===currUser.id ? chat.user2.username : chat.user1.username 
-    const time = new Date(chat.messages[chat.messages.length-1].time)
-    const lastText = chat.messages[chat.messages.length-1].content
-    const prettyTime = `${time.getHours()}:${time.getMinutes()}`
-    const [isVisible,setIsVisible] = React.useState(false)
-    
-    const span_style={
-        display: isVisible===true ? "" : "none" 
-    }
+    const currUser = useSelector(state=>state.currUser)
+    const chatsData = useSelector(state=>state.chats)
+    const name = props.data.username
 
-    const enableActiveChat = ()=>{
-        dispatch(setActiveChat(chat))
-    }
-
-    const handlesSideMenu=()=>{
-        dispatch(setCurrentSideElement(
-            {
-                type:"chatInfo",
-                data:chat.id
+    function enableActiveChat(){
+        const existentChat = chatsData.find(c=> c.user1.id === props.data.id || c.user2.id === props.data.id)
+        if(existentChat){
+            dispatch(setActiveChat(existentChat))
+        }else{
+            const newTemporalChat = {
+                user1:{
+                    username: currUser.username,
+                    id: currUser.id
+                },
+                user2: props.data,
+                messages:[]
             }
-        ))
+            dispatch(setActiveChat(newTemporalChat))
+        }
+        dispatch(setCurrentSideElement(null))
     }
 
     return(
@@ -43,28 +37,16 @@ const ChatLabel = (props)=>{
                     </g>
                 </svg>
             </div>
-            <div className="chat-label-content" onMouseEnter={()=>setIsVisible(true)} onMouseLeave={()=>setIsVisible(false)}>
+            <div className="chat-label-content">
                 <div className="chat-label-content-header">
                     <span className="firstEl">{name}</span>
-                    <span className="secondEl">{prettyTime}</span>
                 </div>
                 <div className="chat-label-content-sub">
-                    <span >{lastText}</span>
-                    <div className="chat-label-content-sub-info">
-                        {
-                            notifs>0 ?
-                            <div className="chat-label-notif">{notifs}</div>
-                            :
-                            null
-                        }  
-                        <svg viewBox="0 0 18 18" preserveAspectRatio="xMidYMid meet" x="0px" y="0px" style={span_style} onClick={handlesSideMenu}>
-                            <path fill="currentColor" d="M3.3,4.6L9,10.3l5.7-5.7l1.6,1.6L9,13.4L1.7,6.2L3.3,4.6z"></path>
-                        </svg>
-                    </div>          
+                    <span >Disponible</span>      
                 </div>
             </div>
         </div>
     )
 }
 
-export default ChatLabel
+export default ContactLabel

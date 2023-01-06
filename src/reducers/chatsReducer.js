@@ -1,15 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
 import chatsService from "../services/chatsService";
 import messageService from "../services/messageService";
-
-const initialState = []
+import { setActiveChat } from "./activeChatReducer";
 
 const chatsSlice = createSlice({
     name:"chats",
-    initialState,
+    initialState: [],
     reducers:{
         setChats(state,action){
             return action.payload
+        },
+        addNewChat(state,action){
+            return state.concat(action.payload)
         },
         addMessageToChats(state,action){
             return state.map(c=>{
@@ -50,11 +52,17 @@ const initializeChats = (id)=>{
 const postMessage = (content,chatId)=>{
     return async dispatch =>{
         const response = await messageService.create(content)
-        const chatObject ={
-            chatId: chatId,
-            message: response
+        console.log(response)  
+        if(chatId!==null){
+            const chatObject ={
+                chatId: chatId,
+                message: response
+            }
+            dispatch(addMessageToChats(chatObject))
+        }else{
+            dispatch(addNewChat(response))
+            dispatch(setActiveChat(response))
         }
-        dispatch(addMessageToChats(chatObject))
     }
 }
 
@@ -70,5 +78,5 @@ const deleteMessage = (id,chatId) =>{
 }
 
 export const chatsReducer = chatsSlice.reducer
-export const {setChats, addMessageToChats, removeMessageFromChats} = chatsSlice.actions 
+export const {setChats, addMessageToChats, removeMessageFromChats, addNewChat} = chatsSlice.actions 
 export {initializeChats,postMessage, deleteMessage}
