@@ -3,6 +3,7 @@ import SideChats from "./SideChats"
 import { useSelector } from "react-redux"
 import SideChatInfo from "./SideChatInfo"
 import SideChatCreator from "./SideChatCreator"
+import SideUserInfo from "./SideUserInfo"
 
  const Sidebar = ()=>{
     const currSideEl = useSelector(state=>state.sideBar)
@@ -21,6 +22,7 @@ import SideChatCreator from "./SideChatCreator"
                     <>
                         <SideChatInfo />
                         <SideChatCreator />
+                        <SideUserInfo />
                     </> 
                     :
                     null

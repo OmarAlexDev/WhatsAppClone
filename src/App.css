@@ -132,6 +132,60 @@ body{
     flex-direction: column;
     width: 100%;
 }
+.sideChatInfo-user{
+    display: flex;
+    flex-direction: row;
+    padding: 5%;
+    gap:20px;
+}
+.sideChatInfoLabels{
+    display: flex;
+    flex-direction: column;
+    place-content: center;
+    gap: 5px;
+}
+.sideChatInfoPrimLabel{
+    font-weight: 400;
+    font-size: 20px;
+}
+.sideChatInfoSecLabel{
+    font-weight: 400;
+    color: #667781;
+}
+.sideChatInfoOptions{
+    display: flex;
+    flex-direction: row;
+    height: 60px;
+    align-items: center;
+    padding-left: 30px;
+    gap: 25px;
+    font-size: 18px;
+    cursor: pointer;
+}
+.sideChatInfoOptions:hover{
+    background-color: #f0f2f5;
+}
+.sideChatInfoOptions > svg{
+    width:20px;
+    color: #8696a0;
+}
+#sideUserInfo{
+    background-color: rgb(240, 242, 245);
+    height: 100%;
+}
+.sideUserInfo-content{
+    display: flex;
+    flex-direction: column;
+}
+.sideUserInfo-content-image{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    padding: 30px;
+}
+.sideUserInfo-content-image-icon > svg{
+    width: 190px;
+}
 #sideChatCreator{
     display: flex;
     flex-direction: column;
@@ -165,7 +219,7 @@ body{
     height:25px;
 }
 .sideChatInfo-user-icon > svg{
-    height: 150px;
+    height: 90px;
 }
 
 .nav{
@@ -458,10 +512,11 @@ svg{
 }
 .active-chat-bottom > span{
     margin-right: 40px;
+    margin-left:20px;
 }
 .active-chat-bottom-textbar{
     margin-left: 40px;
-    width:50vw;
+    width:100vw;
     background-color: white;
     padding: 5px;
     border-radius: 5px;

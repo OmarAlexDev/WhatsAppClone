@@ -38,6 +38,9 @@ const chatsSlice = createSlice({
                     return c
                 }
             })
+        },
+        removeChatFromChats(state,action){
+            return state.filter(c=>c.id!==action.payload)
         }
     }
 })
@@ -76,6 +79,13 @@ const deleteMessage = (id,chatId) =>{
     }
 }
 
+const deleteChat = (chatId) => {
+    return async dispatch=>{
+        const response = await chatsService.remove(chatId)
+        dispatch(removeChatFromChats(chatId))
+    } 
+}
+
 export const chatsReducer = chatsSlice.reducer
-export const {setChats, addMessageToChats, removeMessageFromChats, addNewChat} = chatsSlice.actions 
-export {initializeChats,postMessage, deleteMessage}
+export const {setChats, addMessageToChats, removeMessageFromChats, addNewChat, removeChatFromChats} = chatsSlice.actions 
+export {initializeChats,postMessage, deleteMessage, deleteChat}

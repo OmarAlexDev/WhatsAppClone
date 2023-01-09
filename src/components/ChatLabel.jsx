@@ -23,11 +23,15 @@ const ChatLabel = (props)=>{
         dispatch(setActiveChat(chat))
     }
 
-    const handlesSideMenu=()=>{
+    const handlesSideMenu=()=>{ 
+        const chatInfo = {
+            chatId: chat.id,
+            userData: chat.user1.id===currUser.id ? chat.user2 : chat.user1
+        }
         dispatch(setCurrentSideElement(
             {
                 type:"chatInfo",
-                data:chat.id
+                data:chatInfo
             }
         ))
     }

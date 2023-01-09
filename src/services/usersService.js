@@ -7,4 +7,9 @@ const get = async ()=>{
     return response.data
 }
 
-export default {get}
+const post = async (content)=>{
+    const response = await axios.post(base_url, content)
+    return response.data
+}
+
+export default {get, post}

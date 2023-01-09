@@ -26,9 +26,9 @@ const SideChats = ()=>{
                 console.log(res)
             })
             .catch(err=>{
-                console.log(err)
+                console.log(err.response.data.error)
                 if(err.response.data.error==="Token expired"){
-                    logout()
+                    LogOut()
                 }}
             )
     },[])
@@ -49,14 +49,14 @@ const SideChats = ()=>{
             return <ChatLabel key={curr} data={chat}/>
     })
 
-    function logout(){
+    function LogOut(){
         window.localStorage.removeItem('loggedWAUser');
         dispatch(setActiveChat(null))
         dispatch(setCurrentUser(null))
         dispatch(setChats([]))
     }
 
-    function handlesSideMenu(){
+    function OpenChatCreatorSideMenu(){
         dispatch(setCurrentSideElement(
             {
                 type:"chatCreator",
@@ -65,10 +65,19 @@ const SideChats = ()=>{
         ))
     }
 
+    function OpenUserInfoSideMenu(){
+        dispatch(setCurrentSideElement(
+            {
+                type:"userInfo",
+                data: currUser
+            }
+        ))
+    }
+
     return(
         <>
             <div className="nav" style={nav_styles}>
-                <span className="user-icon" onClick={logout}>
+                <span className="user-icon" onClick={OpenUserInfoSideMenu}>
                     <svg viewBox="0 0 212 212" preserveAspectRatio="xMidYMid meet">
                         <path fill="#DFE5E7" d="M106.251,0.5C164.653,0.5,212,47.846,212,106.25S164.653,212,106.25,212C47.846,212,0.5,164.654,0.5,106.25 S47.846,0.5,106.251,0.5z"></path>
                         <g>
@@ -77,7 +86,7 @@ const SideChats = ()=>{
                         </g>
                     </svg>
                 </span>
-                <span className="chat-icon" onClick={handlesSideMenu}>
+                <span className="chat-icon" onClick={OpenChatCreatorSideMenu}>
                     <svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet"version="1.1" x="0px" y="0px" >
                         <path fill="currentColor" d="M19.005,3.175H4.674C3.642,3.175,3,3.789,3,4.821V21.02 l3.544-3.514h12.461c1.033,0,2.064-1.06,2.064-2.093V4.821C21.068,3.789,20.037,3.175,19.005,3.175z M14.016,13.044H7.041V11.1 h6.975V13.044z M17.016,9.044H7.041V7.1h9.975V9.044z"></path>
                     </svg>

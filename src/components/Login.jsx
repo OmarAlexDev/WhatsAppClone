@@ -3,6 +3,7 @@ import {useDispatch} from 'react-redux'
 import { setCurrentUser } from "../reducers/currentUserReducer"
 import {useNavigate} from 'react-router-dom'
 import loginService from "../services/loginService"
+import usersService from "../services/usersService"
 import chatsService from "../services/chatsService"
 
 const Login = () =>{
@@ -30,7 +31,7 @@ const Login = () =>{
         }
     }
 
-    const login = async (event)=>{
+    const logIn = async (event)=>{
         event.preventDefault
         if((user.username&&user.password)!==""){
             try{
@@ -42,10 +43,21 @@ const Login = () =>{
                 setUser({username:"",password:"",rePassword:""})
                 navigate('/')
             }catch(err){
-                console.log(err)
+                console.log(err.response.data)
             }
         }
-        
+    }
+
+    const signIn = async (event)=>{
+        event.preventDefault
+        if((user.username&&user.password&&user.rePassword)!=="" && user.password === user.rePassword){
+            try{
+                const res = await usersService.post(user)
+                logIn(event)
+            }catch(err){    
+                console.log(err.response.data)
+            }
+        }
     }
 
     return(
@@ -68,7 +80,7 @@ const Login = () =>{
                         <label>2. Ingresa tu <span className="login-keywords">contraseña: </span></label>
                         <input name="password" value={user.password} onChange={()=>handleChange(event)} type="password"/>
                         <label>3. Da click en <span className="login-keywords">INGRESAR: </span></label>
-                        <button onClick={login}>INGRESAR</button>
+                        <button onClick={logIn}>INGRESAR</button>
                         <span className="login-link" onClick={()=>setIsVisible(true)}>¿No estas registrado aún?</span>
                     </div>
                 </div>
@@ -82,7 +94,7 @@ const Login = () =>{
                         <label>2. Ingresa nuevamente tu <span className="login-keywords">contraseña: </span></label>
                         <input name="rePassword" value={user.rePassword} onChange={()=>handleChange(event)} type="password"/>
                         <label>3. Da click en <span className="login-keywords">REGISTRARSE: </span></label>
-                        <button>REGISTRARSE</button>
+                        <button onClick={signIn}>REGISTRARSE</button>
                         <span className="login-link" onClick={()=>setIsVisible(false)}>¿Ya tienes una cuenta?</span>
                     </div>
                 </div>

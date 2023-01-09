@@ -1,14 +1,31 @@
 import { useSelector, useDispatch } from "react-redux"
 import { setCurrentSideElement } from "../reducers/sideBarReducer"
+import { deleteChat } from "../reducers/chatsReducer"
+import { setActiveChat } from "../reducers/activeChatReducer"
 
 const SideChatInfo = ()=>{
     const dispatch = useDispatch()
-    const sideBar = useSelector(state=>state.sideBar)
+    let sideBar = useSelector(state=>state.sideBar)
+    let {username,state, chatId} = ''
+
+    if(sideBar.data!==null && sideBar.data.chatId && sideBar.data.userData){
+        username = sideBar.data.userData.username
+        state = sideBar.data.userData.state
+        chatId = sideBar.data.chatId
+    }
+
     const activeSide_style = {
         display: sideBar.type === "chatInfo" ? "" : "none"
     }
 
     function returnChatsMenu(){
+        dispatch(setCurrentSideElement(null))
+    }
+
+    function removeChat(){
+        dispatch(deleteChat(chatId))
+        dispatch(setCurrentSideElement(null))
+        dispatch(setActiveChat(null))
         dispatch(setCurrentSideElement(null))
     }
 
@@ -22,7 +39,7 @@ const SideChatInfo = ()=>{
                 </span>
                 <h1>Opciones del chat</h1>
             </div>   
-            <div>
+            <div className="sideChatInfo-user">
                 <span className="sideChatInfo-user-icon">
                     <svg viewBox="0 0 212 212" preserveAspectRatio="xMidYMid meet">
                         <path fill="#DFE5E7" d="M106.251,0.5C164.653,0.5,212,47.846,212,106.25S164.653,212,106.25,212C47.846,212,0.5,164.654,0.5,106.25 S47.846,0.5,106.251,0.5z"></path>
@@ -32,6 +49,16 @@ const SideChatInfo = ()=>{
                         </g>
                     </svg>
                 </span>
+                <div className="sideChatInfoLabels">
+                    <span className="sideChatInfoPrimLabel">{username}</span>
+                    <span className="sideChatInfoSecLabel">{state}</span>
+                </div>
+            </div>
+            <div className="sideChatInfoOptions" onClick={removeChat}>
+                <svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" fill="none">
+                    <path fillRule="evenodd" clipRule="evenodd" d="M6 2C4.9 2 4.01 2.9 4.01 4L4 20C4 21.1 4.89 22 5.99 22H18C19.1 22 20 21.1 20 20V8.83C20 8.3 19.79 7.79 19.41 7.42L14.58 2.59C14.21 2.21 13.7 2 13.17 2H6ZM13 8V3.5L18.5 9H14C13.45 9 13 8.55 13 8ZM8 12C7.44772 12 7 12.4477 7 13C7 13.5523 7.44772 14 8 14H16C16.5523 14 17 13.5523 17 13C17 12.4477 16.5523 12 16 12H8ZM14 17C14 16.4477 13.5523 16 13 16H8C7.44772 16 7 16.4477 7 17C7 17.5523 7.44772 18 8 18H13C13.5523 18 14 17.5523 14 17Z" fill="currentColor"></path>
+                </svg>
+                Eliminar Chat
             </div>
         </div>
     )
