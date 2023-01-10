@@ -1,18 +1,25 @@
+import React from "react"
 import { setCurrentSideElement } from "../reducers/sideBarReducer"
 import { setActiveChat } from "../reducers/activeChatReducer"
-import { setCurrentUser } from "../reducers/currentUserReducer"
+import { setCurrentUser, updateUserInDb} from "../reducers/currentUserReducer"
 import { setChats } from "../reducers/chatsReducer"
+import { setUsers } from "../reducers/usersReducer"
 import { useSelector, useDispatch } from "react-redux"
 
 const SideUserInfo = () =>{
     const dispatch = useDispatch()
     const sideBar = useSelector(state=>state.sideBar)
-    let {username,state} = ''
-
-    if(sideBar.data!==null && sideBar.data.state && sideBar.data.username){
-        username = sideBar.data.username
-        state = sideBar.data.state
-    }
+    const users = useSelector(state=>state.users)
+    const currUser = useSelector(state=>state.currUser)
+    const [usernameIsEditable, setUsernameIsEditable] = React.useState(false)
+    const [stateIsEditable, setStateIsEditable] = React.useState(false)
+    const [tempUser, setTempUsername] = React.useState(
+                                                        {   
+                                                            username:currUser.username,
+                                                            profileImage: currUser.profileImage,
+                                                            state: currUser.state,
+                                                            id: currUser.id
+                                                        })
 
     const activeSide_style = {
         display: sideBar.type === "userInfo" ? "" : "none"
@@ -28,6 +35,21 @@ const SideUserInfo = () =>{
         dispatch(setCurrentUser(null))
         dispatch(setChats([]))
         dispatch(setCurrentSideElement(null))
+        dispatch(setUsers([]))
+    }
+
+    function UpdateUser(target){
+        target === 'state' ?  setStateIsEditable(false) : setUsernameIsEditable(false)
+        if(tempUser.username!==currUser.username || tempUser.state!==currUser.state || tempUser.profileImage!==currUser.profileImage){
+            if(tempUser.username!==currUser.username && users.find(u=>u.username===tempUser.username)){
+                console.log('Username already in use')   
+            }else{
+                dispatch(updateUserInDb(tempUser)) 
+            }  
+        }else{
+            console.log("No change submitted")
+            setTempUsername(prev=>{ return {...prev, username: currUser.username, state: currUser.state, profileImage: currUser.profileImage}})
+        }
     }
 
     return(
@@ -52,17 +74,61 @@ const SideUserInfo = () =>{
                         </svg>
                     </span>
                 </div>
-                <div>
-
+                <div className="sideUserInfo-content-label">
+                    <span>Tu nombre</span>
+                    {
+                        usernameIsEditable===false ?
+                        <div className="toggle-data">
+                            <span className="toggle-data-label">{currUser.username}</span>
+                            <span className="toggle-data-icon" onClick={()=>setUsernameIsEditable(true)}>
+                                <svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" enableBackground="new 0 0 24 24" xmlSpace="preserve">
+                                    <path fill="currentColor" d="M3.95,16.7v3.4h3.4l9.8-9.9l-3.4-3.4L3.95,16.7z M19.75,7.6c0.4-0.4,0.4-0.9,0-1.3 l-2.1-2.1c-0.4-0.4-0.9-0.4-1.3,0l-1.6,1.6l3.4,3.4L19.75,7.6z"></path>
+                                </svg>
+                            </span>
+                        </div>
+                        :
+                        <div className="toggle-data active">
+                            <span className="toggle-data-label">
+                                <input value={tempUser.username} onChange={(e)=>setTempUsername(prev=>{ return {...prev, username: e.target.value}})}/>
+                            </span>
+                            <span className="toggle-data-icon" onClick={()=>UpdateUser('username')}>
+                                <svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" enableBackground="new 0 0 24 24" xmlSpace="preserve">
+                                    <path fill="currentColor" d="M9,17.2l-4-4l-1.4,1.3L9,19.9L20.4,8.5L19,7.1L9,17.2z"></path>
+                                </svg>
+                            </span>
+                        </div>
+                    } 
                 </div>
-                <div>
-
+                <div className="sideUserInfo-content-empty-label">
+                    Este nombre será visible para tus contactos de WhatsApp.
                 </div>
-                <div>
-
+                <div className="sideUserInfo-content-label">
+                    <span>Info.</span>
+                    {
+                        stateIsEditable===false ?
+                        <div className="toggle-data">
+                            <span className="toggle-data-label">{currUser.state}</span>
+                            <span className="toggle-data-icon" onClick={()=>setStateIsEditable(true)}>
+                                <svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" enableBackground="new 0 0 24 24" xmlSpace="preserve">
+                                    <path fill="currentColor" d="M3.95,16.7v3.4h3.4l9.8-9.9l-3.4-3.4L3.95,16.7z M19.75,7.6c0.4-0.4,0.4-0.9,0-1.3 l-2.1-2.1c-0.4-0.4-0.9-0.4-1.3,0l-1.6,1.6l3.4,3.4L19.75,7.6z"></path>
+                                </svg>
+                            </span>
+                        </div>
+                        :
+                        <div className="toggle-data active">
+                            <span className="toggle-data-label">
+                                <input value={tempUser.state} onChange={(e)=>setTempUsername(prev=>{ return {...prev, state: e.target.value}})}/>
+                            </span>
+                            <span className="toggle-data-icon" onClick={()=>UpdateUser('state')}>
+                                <svg viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet" enableBackground="new 0 0 24 24" xmlSpace="preserve">
+                                    <path fill="currentColor" d="M9,17.2l-4-4l-1.4,1.3L9,19.9L20.4,8.5L19,7.1L9,17.2z"></path>
+                                </svg>
+                            </span>
+                        </div>
+                    } 
                 </div>
             </div>
-            <div className="sideChatInfoOptions" onClick={LogOut}>
+            <div className="sideChatInfoOptions logout" onClick={LogOut}>
                 <svg viewBox="0 0 28 35" preserveAspectRatio="xMidYMid meet">
                     <path d="M14,1.10204082 C18.5689011,1.10204082 22.2727273,4.80586698 22.2727273,9.37476809 L22.272,12.1790408 L22.3564837,12.181606 C24.9401306,12.294858 27,14.4253101 27,17.0368705 L27,29.4665309 C27,32.1506346 24.824104,34.3265306 22.1400003,34.3265306 L5.85999974,34.3265306 C3.175896,34.3265306 1,32.1506346 1,29.4665309 L1,17.0368705 C1,14.3970988 3.10461313,12.2488858 5.72742704,12.178644 L5.72727273,9.37476809 C5.72727273,4.80586698 9.43109889,1.10204082 14,1.10204082 Z M14,19.5600907 C12.0418995,19.5600907 10.4545455,21.2128808 10.4545455,23.2517007 C10.4545455,25.2905206 12.0418995,26.9433107 14,26.9433107 C15.9581005,26.9433107 17.5454545,25.2905206 17.5454545,23.2517007 C17.5454545,21.2128808 15.9581005,19.5600907 14,19.5600907 Z M14,4.79365079 C11.4617216,4.79365079 9.39069048,6.79417418 9.27759175,9.30453585 L9.27272727,9.52092352 L9.272,12.1760408 L18.727,12.1760408 L18.7272727,9.52092352 C18.7272727,6.91012289 16.6108006,4.79365079 14,4.79365079 Z" fill="currentColor"></path>
                 </svg>

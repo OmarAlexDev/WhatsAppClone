@@ -12,6 +12,7 @@ const ChatLabel = (props)=>{
     const name = chat.user1.id===currUser.id ? chat.user2.username : chat.user1.username 
     const time = new Date(chat.messages[chat.messages.length-1].time)
     const lastText = chat.messages[chat.messages.length-1].content
+    const lastTextShort = lastText.length>38 ? lastText.slice(0,38)+"..." : lastText
     const prettyTime = `${time.getHours()}:${time.getMinutes()}`
     const [isVisible,setIsVisible] = React.useState(false)
     
@@ -53,7 +54,7 @@ const ChatLabel = (props)=>{
                     <span className="secondEl">{prettyTime}</span>
                 </div>
                 <div className="chat-label-content-sub">
-                    <span >{lastText}</span>
+                    <span >{lastTextShort}</span>
                     <div className="chat-label-content-sub-info">
                         {
                             notifs>0 ?

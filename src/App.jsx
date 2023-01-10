@@ -6,7 +6,7 @@ import Sidebar from './components/Sidebar'
 import Chat from './components/Chat'
 import Login from './components/Login'
 import { setCurrentUser } from './reducers/currentUserReducer'
-import chatsService from './services/chatsService'
+import tokenService from './services/tokenService'
 
 const App = ()=>{
   const dispatch = useDispatch()
@@ -18,7 +18,7 @@ const App = ()=>{
     if(user!=null){
       const loggedUser = JSON.parse(user)
       dispatch(setCurrentUser(loggedUser))
-      chatsService.setToken(loggedUser.token)   
+      tokenService.setToken(loggedUser.token)   
       navigate('/')
     }
   },[])

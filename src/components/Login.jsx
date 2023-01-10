@@ -1,10 +1,10 @@
 import React from "react"
 import {useDispatch} from 'react-redux'
-import { setCurrentUser } from "../reducers/currentUserReducer"
+import { setCurrentUser} from "../reducers/currentUserReducer"
 import {useNavigate} from 'react-router-dom'
 import loginService from "../services/loginService"
 import usersService from "../services/usersService"
-import chatsService from "../services/chatsService"
+import tokenService from "../services/tokenService"
 
 const Login = () =>{
     const [user,setUser]= React.useState({username:"",password:"",rePassword:""})
@@ -39,7 +39,7 @@ const Login = () =>{
                 dispatch(setCurrentUser(res))
                 const parsedUser = JSON.stringify(res)
                 window.localStorage.setItem('loggedWAUser',parsedUser)
-                chatsService.setToken(res.token)
+                tokenService.setToken(res.token)
                 setUser({username:"",password:"",rePassword:""})
                 navigate('/')
             }catch(err){

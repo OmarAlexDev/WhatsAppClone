@@ -26,8 +26,8 @@ const SideChats = ()=>{
                 console.log(res)
             })
             .catch(err=>{
-                console.log(err.response.data.error)
-                if(err.response.data.error==="Token expired"){
+                console.log(err)
+                if(err.response && err.response.data.error==="Token expired"){
                     LogOut()
                 }}
             )
@@ -69,7 +69,7 @@ const SideChats = ()=>{
         dispatch(setCurrentSideElement(
             {
                 type:"userInfo",
-                data: currUser
+                data: null
             }
         ))
     }

@@ -1,4 +1,5 @@
 import axios from 'axios'
+import tokenService from './tokenService'
 
 const base_url = "http://localhost:3001/MINKAN/api/users"
 
@@ -12,4 +13,10 @@ const post = async (content)=>{
     return response.data
 }
 
-export default {get, post}
+const put = async (content)=>{
+    const config = {headers: {Authorization: tokenService.getToken()}}
+    const response = await axios.put(`${base_url}/${content.id}`, content, config)
+    return response.data
+}
+
+export default {get, post, put}

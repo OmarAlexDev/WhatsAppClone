@@ -47,42 +47,58 @@ const chatsSlice = createSlice({
 
 const initializeChats = (id)=>{
     return async dispatch=>{
-        const response = await chatsService.get(id)
-        return dispatch(setChats(response))
+        try{
+            const response = await chatsService.get(id)
+            return dispatch(setChats(response))
+        }catch(err){
+            console.log(err)
+        }
     }
 }
 
 const postMessage = (content,chatId)=>{
     return async dispatch =>{
-        const response = await messageService.create(content)  
-        if(chatId!==null){
-            const chatObject ={
-                chatId: chatId,
-                message: response
+        try{
+            const response = await messageService.create(content)  
+            if(chatId!==null){
+                const chatObject ={
+                    chatId: chatId,
+                    message: response
+                }
+                dispatch(addMessageToChats(chatObject))
+            }else{
+                dispatch(addNewChat(response))
+                dispatch(setActiveChat(response))
             }
-            dispatch(addMessageToChats(chatObject))
-        }else{
-            dispatch(addNewChat(response))
-            dispatch(setActiveChat(response))
+        }catch(err){
+            console.log(err)
         }
     }
 }
 
 const deleteMessage = (id,chatId) =>{
     return async dispatch =>{
-        const response = await messageService.remove(id)
-        const chatObject = {
-            chatId,
-            message:response
+        try{
+            const response = await messageService.remove(id)
+            const chatObject = {
+                chatId,
+                message:response
+            }
+            dispatch(removeMessageFromChats(chatObject))
+        }catch(err){
+            console.log(err)
         }
-        dispatch(removeMessageFromChats(chatObject))
     }
 }
 
 const deleteChat = (chatId) => {
     return async dispatch=>{
-        const response = await chatsService.remove(chatId)
-        dispatch(removeChatFromChats(chatId))
+        try{
+            const response = await chatsService.remove(chatId)
+            dispatch(removeChatFromChats(chatId))
+        }catch(err){
+            console.log(err)
+        }
     } 
 }
 
