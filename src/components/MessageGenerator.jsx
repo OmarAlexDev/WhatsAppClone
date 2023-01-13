@@ -30,7 +30,7 @@ const MessageGenerator = (props)=>{
     return(
         <div className="active-chat-bottom">
             <div className="active-chat-bottom-textbar">
-                <input value={message} onChange={(event)=>{setMessage(event.target.value)}}/>
+                <input placeholder="Escribe un mensaje aqui" value={message} onChange={(event)=>{setMessage(event.target.value)}}/>
             </div>
             <span style={sendStyle} onClick={createMessage}>
                 <svg viewBox="0 0 24 24" height="24" width="24" preserveAspectRatio="xMidYMid meet" version="1.1" x="0px" y="0px">

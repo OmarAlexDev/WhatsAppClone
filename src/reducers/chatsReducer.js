@@ -51,7 +51,7 @@ const initializeChats = (id)=>{
             const response = await chatsService.get(id)
             return dispatch(setChats(response))
         }catch(err){
-            console.log(err)
+            return err
         }
     }
 }

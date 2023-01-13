@@ -7,6 +7,7 @@ import { setCurrentUser } from "../reducers/currentUserReducer"
 import { setCurrentSideElement } from "../reducers/sideBarReducer";
 import { setChats, initializeChats} from "../reducers/chatsReducer"
 import { setActiveChat } from "../reducers/activeChatReducer"
+import { setUsers } from "../reducers/usersReducer";
 import { useSelector, useDispatch} from 'react-redux'
 
 const SideChats = ()=>{
@@ -15,7 +16,7 @@ const SideChats = ()=>{
     const activeChat=useSelector(state=>state.activeChat)
     const currUser = useSelector(state=>state.currUser)
     const chatsData = useSelector(state=>state.chats)
-    const chatFilter = useSelector(state=>state.chatFilter)
+    const chatFilter = useSelector(state=>state.filters.chatFilter)
     const nav_styles={
         backgroundColor: "#008069"
     }
@@ -24,13 +25,10 @@ const SideChats = ()=>{
         dispatch(initializeChats(currUser.id))
             .then(res=>{
                 console.log(res)
-            })
-            .catch(err=>{
-                console.log(err)
-                if(err.response && err.response.data.error==="Token expired"){
+                if(res.response && res.response.data.error==="Token expired"){
                     LogOut()
-                }}
-            )
+                }
+            })
     },[])
 
     React.useEffect(()=>{
@@ -54,6 +52,7 @@ const SideChats = ()=>{
         dispatch(setActiveChat(null))
         dispatch(setCurrentUser(null))
         dispatch(setChats([]))
+        dispatch(setUsers([]))
     }
 
     function OpenChatCreatorSideMenu(){

@@ -2,6 +2,7 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux"
 import { setCurrentSideElement } from "../reducers/sideBarReducer"
 import { obtainUsers } from "../reducers/usersReducer";
+import { setUserFilter } from "../reducers/filterReducer";
 import ContactLabel from "./ContactLabel";
 import EmptySearch from "./EmptySearch";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -13,7 +14,7 @@ const SideChatCreator = () => {
     const sideBar = useSelector(state=>state.sideBar)
     const currUser = useSelector(state=>state.currUser)
     const users = useSelector(state=>state.users)
-    const [userFilter,setUserFilter] = React.useState('')
+    const userFilter = useSelector(state=>state.filters.userFilter)
 
     const activeSide_style = {
         display: sideBar.type === "chatCreator" ? "" : "none"
@@ -25,6 +26,7 @@ const SideChatCreator = () => {
 
     function returnChatsMenu(){
         dispatch(setCurrentSideElement(null))
+        dispatch(setUserFilter(''))
     }
 
     const usersToShow = users.filter(u=>u.username.includes(userFilter)).map((u,index)=>{
@@ -44,7 +46,7 @@ const SideChatCreator = () => {
             <div id="search">
                 <div className="search-bar side">
                     <FontAwesomeIcon className='search-icon' icon={faMagnifyingGlass}/>
-                    <input placeholder='Busca contactos' value={userFilter} onChange={(e)=>setUserFilter(e.target.value)}/>
+                    <input placeholder='Busca contactos' value={userFilter} onChange={(e)=>dispatch(setUserFilter(e.target.value))}/>
                 </div>
             </div>
             {usersToShow.length>0 ?

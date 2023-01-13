@@ -1,6 +1,10 @@
 import React from "react"
+import { useSelector, useDispatch } from "react-redux"
+import { deleteMessage } from "../reducers/chatsReducer"
 
 const Message =  (props)=>{
+    const dispatch = useDispatch()
+    const activeChat = useSelector(state=>state.activeChat)
     const {content, time,active,id} = props.data
     const {primary} = props
     const [deleteIsVisible, setDeleteIsVisible] = React.useState(false)
@@ -8,7 +12,9 @@ const Message =  (props)=>{
     const prettyTime = `${prettyDate.getHours()}:${prettyDate.getMinutes()}`
 
     const message_style = {
-        flexDirection : primary ===true ? "row-reverse" : "row"
+        flexDirection : primary ===true ? "row-reverse" : "row",
+        paddingLeft : primary === true ? "30%" : "0",
+        paddingRight: primary === true ? "0" : "30%",
     }
     const message_content_style = {
         backgroundColor : primary === true ? "#d9fdd3" : "#fff",
@@ -19,6 +25,10 @@ const Message =  (props)=>{
     }
     const span_style={
         opacity: deleteIsVisible===true && active ? "1" : "0"
+    }
+
+    function removeMessage(id){  
+        dispatch(deleteMessage(id,activeChat.id))
     }
     
     return(
@@ -44,7 +54,7 @@ const Message =  (props)=>{
                     {content}
                 </div>
                 <div className="message-content-details">
-                    <span style={span_style} onClick={active ? ()=>props.handleDelete(id) : null}>
+                    <span style={span_style} onClick={active ? ()=>removeMessage(id) : null}>
                         <svg viewBox="0 0 18 18" preserveAspectRatio="xMidYMid meet" x="0px" y="0px">
                             <path fill="currentColor" d="M3.3,4.6L9,10.3l5.7-5.7l1.6,1.6L9,13.4L1.7,6.2L3.3,4.6z"></path>
                         </svg>

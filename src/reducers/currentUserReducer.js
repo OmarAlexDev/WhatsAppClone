@@ -18,7 +18,6 @@ const currUserSlice = createSlice({
 const updateUserInDb = (content)=>{
     return async dispatch=>{
         try{
-            console.log(content)
             const response = await usersService.put(content)
             const parsedUser = JSON.stringify(response)
             window.localStorage.setItem('loggedWAUser',parsedUser)
@@ -31,7 +30,7 @@ const updateUserInDb = (content)=>{
                 id: response.id
             }))
         }catch(err){
-            console.log(err.response.data)
+            console.log(err)
         }
     }
 }

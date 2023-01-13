@@ -2,6 +2,7 @@ import React from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { setActiveChat } from "../reducers/activeChatReducer"
 import { setCurrentSideElement } from "../reducers/sideBarReducer"
+import { ScrollScreen } from "../functions/Scroll"
 
 
 const ChatLabel = (props)=>{
@@ -22,6 +23,7 @@ const ChatLabel = (props)=>{
 
     const enableActiveChat = ()=>{
         dispatch(setActiveChat(chat))
+        ScrollScreen("chat")
     }
 
     const handlesSideMenu=()=>{ 
