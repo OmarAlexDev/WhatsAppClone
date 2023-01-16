@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import {io} from 'socket.io-client'
 import SearchBar from "./SearchBar";
 import ChatLabel from './ChatLabel'
 import EmptySearch from "./EmptySearch";
@@ -11,7 +12,7 @@ import { setUsers } from "../reducers/usersReducer";
 import { useSelector, useDispatch} from 'react-redux'
 
 const SideChats = ()=>{
-
+    
     const dispatch = useDispatch()
     const activeChat=useSelector(state=>state.activeChat)
     const currUser = useSelector(state=>state.currUser)
@@ -29,6 +30,25 @@ const SideChats = ()=>{
                     LogOut()
                 }
             })
+    },[])
+
+    React.useEffect(()=>{
+
+        const socket = io('http://localhost:3001/')
+
+        socket.on('connect', () => {
+            console.log("Socket connected",socket.id)
+        
+            socket.on('message-event',(arg)=>{
+                console.log(arg)
+                console.log("Escuchando cambios desde server...")
+            })  
+        })
+        
+        socket.on('disconnect', () => {
+            console.log("Socket disconnected")
+        })
+        
     },[])
 
     React.useEffect(()=>{

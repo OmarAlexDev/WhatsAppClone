@@ -678,4 +678,7 @@ svg{
     .active-chat-head-user{
         padding-left: 15px;
     }
+    .message-content{
+        max-width: fit-content;
+    }
 }

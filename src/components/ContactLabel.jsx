@@ -1,6 +1,7 @@
 import { useSelector, useDispatch } from "react-redux"
 import { setActiveChat } from "../reducers/activeChatReducer"
 import { setCurrentSideElement } from "../reducers/sideBarReducer"
+import {ScrollScreen} from '../functions/Scroll'
 
 const ContactLabel = (props)=>{
     const dispatch = useDispatch()
@@ -24,6 +25,7 @@ const ContactLabel = (props)=>{
             dispatch(setActiveChat(newTemporalChat))
         }
         dispatch(setCurrentSideElement(null))
+        ScrollScreen("chat")
     }
 
     return(

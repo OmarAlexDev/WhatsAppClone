@@ -1,7 +1,8 @@
 import axios from 'axios'
 import tokenService from './tokenService'
 
-const base_url = "http://localhost:3001/MINKAN/api/users"
+//const base_url = "http://localhost:3001/MINKAN/api/users"
+const base_url="/MINKAN/api/users"
 
 const get = async ()=>{
     const response = await axios.get(base_url)

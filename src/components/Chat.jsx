@@ -27,7 +27,8 @@ const Chat = ()=>{
 
     if(activeChat!==null){
         currDestinatary = currUser.id!==activeChat.user1.id ? activeChat.user1 : activeChat.user2
-        time = activeChat.messages.length>0 ? new Date(activeChat.messages[activeChat.messages.length-1].time) : null
+        let selfMessages = activeChat.messages.length>0 ? activeChat.messages.filter(m=>m.remittent!==currUser.id) : null
+        time = selfMessages!==null ? new Date(selfMessages[selfMessages.length-1].time) : null
         prettyTime = time!==null ? `${time.getHours()}:${time.getMinutes()}` : null
 
         activeChat.messages.forEach((m,curr)=>{   

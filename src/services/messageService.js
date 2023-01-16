@@ -1,7 +1,8 @@
 import axios from 'axios'
 import tokenService from './tokenService'
 
-const base_url = "http://localhost:3001/MINKAN/api/messages"
+//const base_url = "http://localhost:3001/MINKAN/api/messages"
+const base_url="/MINKAN/api/messages"
 
 const create = async (content)=>{
     const config = {headers: {Authorization: tokenService.getToken()}}
