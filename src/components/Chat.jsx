@@ -19,6 +19,7 @@ const Chat = ()=>{
     let messages_to_show = null
     let time= null
     let prettyTime = null 
+    let selfMessages = null
     let filteredMessages = []
 
     const styles={
@@ -27,8 +28,9 @@ const Chat = ()=>{
 
     if(activeChat!==null){
         currDestinatary = currUser.id!==activeChat.user1.id ? activeChat.user1 : activeChat.user2
-        let selfMessages = activeChat.messages.length>0 ? activeChat.messages.filter(m=>m.remittent!==currUser.id) : null
-        time = selfMessages!==null ? new Date(selfMessages[selfMessages.length-1].time) : null
+        selfMessages = activeChat.messages.length>0 ? activeChat.messages.filter(m=>m.remittent!==currUser.id) : null
+        console.log(selfMessages)
+        time = selfMessages!==null && selfMessages.length>0 ? new Date(selfMessages[selfMessages.length-1].time) : null
         prettyTime = time!==null ? `${time.getHours()}:${time.getMinutes()}` : null
 
         activeChat.messages.forEach((m,curr)=>{   

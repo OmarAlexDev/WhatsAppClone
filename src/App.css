@@ -681,4 +681,18 @@ svg{
     .message-content{
         max-width: fit-content;
     }
+    .chat-label-content-sub-info > svg{
+        display: block!important;
+    }
+    .login-body{
+        flex-direction: column;
+        place-content: space-around;
+    }
+    .login-card{
+        padding: 5%;
+    }
+    .login-card, .login-hero{
+        width: 100%;
+        box-sizing: border-box;
+    }
 }

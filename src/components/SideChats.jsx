@@ -35,14 +35,18 @@ const SideChats = ()=>{
     React.useEffect(()=>{
 
         const socket = io('http://localhost:3001/')
+        //const socket = io()
 
         socket.on('connect', () => {
             console.log("Socket connected",socket.id)
         
             socket.on('message-event',(arg)=>{
-                console.log(arg)
+                //console.log(arg)
                 console.log("Escuchando cambios desde server...")
             })  
+            socket.on('access-event',(args)=>{
+                console.log("Escuchando entradas desde server")
+            })
         })
         
         socket.on('disconnect', () => {
