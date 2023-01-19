@@ -1,18 +1,18 @@
-import React, { useState } from "react";
-import {io} from 'socket.io-client'
+import React from "react";
+import { SocketContext } from "../context/socket";
 import SearchBar from "./SearchBar";
 import ChatLabel from './ChatLabel'
 import EmptySearch from "./EmptySearch";
 
 import { setCurrentUser } from "../reducers/currentUserReducer"
 import { setCurrentSideElement } from "../reducers/sideBarReducer";
-import { setChats, initializeChats} from "../reducers/chatsReducer"
+import { setChats, initializeChats, updateChat, removeChatFromChats} from "../reducers/chatsReducer"
 import { setActiveChat } from "../reducers/activeChatReducer"
-import { setUsers } from "../reducers/usersReducer";
+import { setUsers, obtainUsers, obtainUser } from "../reducers/usersReducer";
 import { useSelector, useDispatch} from 'react-redux'
 
 const SideChats = ()=>{
-    
+    const socket = React.useContext(SocketContext)
     const dispatch = useDispatch()
     const activeChat=useSelector(state=>state.activeChat)
     const currUser = useSelector(state=>state.currUser)
@@ -25,32 +25,51 @@ const SideChats = ()=>{
     React.useEffect(()=>{
         dispatch(initializeChats(currUser.id))
             .then(res=>{
-                console.log(res)
                 if(res.response && res.response.data.error==="Token expired"){
                     LogOut()
+                }
+            })
+        dispatch(obtainUsers())
+            .then(res=>{
+                if(res && res.response.data.error){
+                    console.log(res.response.data.error)
                 }
             })
     },[])
 
     React.useEffect(()=>{
-
-        //const socket = io('http://localhost:3001/')
-        const socket = io()
-
         socket.on('connect', () => {
             console.log("Socket connected",socket.id)
         
-            socket.on('message-event',(arg)=>{
-                //console.log(arg)
-                console.log("Escuchando cambios desde server...")
-            })  
+            socket.on('database-update-chat',(args)=>{
+                if(args.destinatary===currUser.id){
+                    if(args.type==="message_update"){
+                        dispatch(updateChat(args.destinatary, args.remittent))
+                            .then(res=>{
+                                if(res && res.response.data.error){
+                                    console.log(res.response.data.error)
+                                }
+                            })
+                    }else if(args.type==="chat_deletion"){
+                        dispatch(removeChatFromChats(args.chat))
+                    }       
+                }   
+            }) 
+            socket.on('database-update-user',(args)=>{
+                dispatch(obtainUser(args.id))
+                    .then(res=>{
+                        if(res && res.response.data.error){
+                            console.log(res.response.data.error)
+                        }
+                    })
+            })
         })
         
         socket.on('disconnect', () => {
             console.log("Socket disconnected")
         })
         
-    },[])
+    },[socket])
 
     React.useEffect(()=>{
         if(activeChat!==null){

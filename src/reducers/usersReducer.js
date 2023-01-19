@@ -1,5 +1,6 @@
 import {createSlice} from '@reduxjs/toolkit'
 import usersService from '../services/usersService'
+import { updateUserFromChats } from './chatsReducer'
 
 const userSlice = createSlice({
     name:"users",
@@ -27,14 +28,26 @@ const userSlice = createSlice({
 const obtainUsers = ()=>{
     return async dispatch=>{
         try{
-            const response = await usersService.get()
+            const response = await usersService.getAll()
             dispatch(setUsers(response))
         }catch(err){
-            console.log(err)
+            return err
         }    
+    }
+}
+
+const obtainUser = (id)=>{
+    return async dispatch=>{
+        try{
+            const response = await usersService.get(id)
+            dispatch(updateUsers(response))
+            dispatch(updateUserFromChats(response))
+        }catch(err){
+            return err
+        }
     }
 }
 
 export const userReducer = userSlice.reducer
 export const {setUsers, updateUsers} = userSlice.actions
-export {obtainUsers} 
+export {obtainUsers, obtainUser} 

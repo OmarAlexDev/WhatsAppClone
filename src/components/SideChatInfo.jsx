@@ -1,10 +1,14 @@
+import React from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { setCurrentSideElement } from "../reducers/sideBarReducer"
 import { deleteChat } from "../reducers/chatsReducer"
 import { setActiveChat } from "../reducers/activeChatReducer"
+import { SocketContext } from "../context/socket"
 
 const SideChatInfo = ()=>{
+    const socket = React.useContext(SocketContext)
     const dispatch = useDispatch()
+    const currUser = useSelector(state=>state.currUser)
     let sideBar = useSelector(state=>state.sideBar)
     let {username,state, chatId} = ''
 
@@ -24,9 +28,17 @@ const SideChatInfo = ()=>{
 
     function removeChat(){
         dispatch(deleteChat(chatId))
-        dispatch(setCurrentSideElement(null))
-        dispatch(setActiveChat(null))
-        dispatch(setCurrentSideElement(null))
+            .then((res)=>{
+                if(res && res.response.data.error){
+                    console.log(res.response.data.error)
+                }
+                else{
+                    socket.emit('client-delete-chat',{destinatary: sideBar.data.userData.id,  chat: chatId})
+                    dispatch(setCurrentSideElement(null))
+                    dispatch(setActiveChat(null))
+                    dispatch(setCurrentSideElement(null))
+                }
+            }) 
     }
 
     return(

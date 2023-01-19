@@ -10,8 +10,17 @@ const chatsSlice = createSlice({
         setChats(state,action){
             return action.payload
         },
-        addNewChat(state,action){
-            return state.concat(action.payload)
+        updateChats(state,action){
+            if(state.find(c=>c.id===action.payload.id)){
+                return state.map(c=>{
+                    if(c.id===action.payload.id){
+                        return action.payload
+                    }
+                    return c
+                })
+            }else{
+                return state.concat(action.payload)
+            }
         },
         addMessageToChats(state,action){
             return state.map(c=>{
@@ -41,6 +50,16 @@ const chatsSlice = createSlice({
         },
         removeChatFromChats(state,action){
             return state.filter(c=>c.id!==action.payload)
+        },
+        updateUserFromChats(state,action){
+            return state.map(c=>{
+                if(c.user1.id===action.payload.id){
+                    return {...c, user1: action.payload}
+                }else if(c.user2.id===action.payload.id){
+                    return {...c, user1: action.payload}
+                }
+                return c
+            })
         }
     }
 })
@@ -50,6 +69,28 @@ const initializeChats = (id)=>{
         try{
             const response = await chatsService.get(id)
             return dispatch(setChats(response))
+        }catch(err){
+            return err
+        }
+    }
+}
+
+const deleteChat = (chatId) => {
+    return async dispatch=>{
+        try{
+            await chatsService.remove(chatId)
+            dispatch(removeChatFromChats(chatId))
+        }catch(err){
+            return err
+        }
+    } 
+}
+
+const updateChat = (id, otherId) =>{
+    return async dispatch=>{
+        try{
+            const response = await chatsService.get(id, otherId)
+            dispatch(updateChats(response))
         }catch(err){
             return err
         }
@@ -67,11 +108,11 @@ const postMessage = (content,chatId)=>{
                 }
                 dispatch(addMessageToChats(chatObject))
             }else{
-                dispatch(addNewChat(response))
+                dispatch(updateChats(response))
                 dispatch(setActiveChat(response))
             }
         }catch(err){
-            console.log(err)
+            return err
         }
     }
 }
@@ -86,22 +127,11 @@ const deleteMessage = (id,chatId) =>{
             }
             dispatch(removeMessageFromChats(chatObject))
         }catch(err){
-            console.log(err)
+            return err
         }
     }
 }
 
-const deleteChat = (chatId) => {
-    return async dispatch=>{
-        try{
-            const response = await chatsService.remove(chatId)
-            dispatch(removeChatFromChats(chatId))
-        }catch(err){
-            console.log(err)
-        }
-    } 
-}
-
 export const chatsReducer = chatsSlice.reducer
-export const {setChats, addMessageToChats, removeMessageFromChats, addNewChat, removeChatFromChats} = chatsSlice.actions 
-export {initializeChats,postMessage, deleteMessage, deleteChat}
+export const {setChats, addMessageToChats, removeMessageFromChats, removeChatFromChats, updateChats, updateUserFromChats} = chatsSlice.actions 
+export {initializeChats,postMessage, deleteMessage, deleteChat, updateChat}

@@ -1,8 +1,10 @@
 import React from "react"
 import { useSelector, useDispatch} from "react-redux"
 import { postMessage } from "../reducers/chatsReducer"
+import { SocketContext } from "../context/socket"
 
 const MessageGenerator = (props)=>{
+    const socket = React.useContext(SocketContext)
     const dispatch = useDispatch()
     const {currDestinatary} = props
     const activeChat = useSelector(state=>state.activeChat)
@@ -17,14 +19,19 @@ const MessageGenerator = (props)=>{
     function createMessage(){
         const newMsg = {
             content: message,
-            remittent:currUser.username,
-            destinatary:currDestinatary.username
+            remittent:currUser.id,
+            destinatary:currDestinatary.id
         }
         dispatch(postMessage(newMsg, activeChat.id || null))
             .then((res)=>{
-                setMessage('')
+                if(res && res.response.data.error){
+                    console.log(res.response.data.error)
+                }else{
+                    socket.emit('client-push-message',{destinatary: currDestinatary.id,  remittent: currUser.id})
+                    setMessage('')
+                }
             })
-            .catch(err=>console.log(err))
+
     }
 
     return(

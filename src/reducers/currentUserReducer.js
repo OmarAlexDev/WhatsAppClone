@@ -15,7 +15,7 @@ const currUserSlice = createSlice({
     }
 })
 
-const updateUserInDb = (content)=>{
+const updateCurrentUser = (content)=>{
     return async dispatch=>{
         try{
             const response = await usersService.put(content)
@@ -30,7 +30,7 @@ const updateUserInDb = (content)=>{
                 id: response.id
             }))
         }catch(err){
-            console.log(err)
+            return err
         }
     }
 }
@@ -38,4 +38,4 @@ const updateUserInDb = (content)=>{
 
 export const currUserReducer = currUserSlice.reducer
 export const {setCurrentUser} = currUserSlice.actions
-export {updateUserInDb}
+export {updateCurrentUser}

@@ -1,11 +1,15 @@
 import React from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { deleteMessage } from "../reducers/chatsReducer"
+import { SocketContext } from "../context/socket"
 
 const Message =  (props)=>{
+    const socket = React.useContext(SocketContext)
     const dispatch = useDispatch()
     const activeChat = useSelector(state=>state.activeChat)
+    const currUser = useSelector(state=>state.currUser)
     const {content, time,active,id} = props.data
+    const currDestinatary = props.currDestinatary
     const {primary} = props
     const [deleteIsVisible, setDeleteIsVisible] = React.useState(false)
     const prettyDate= new Date(time)
@@ -29,6 +33,13 @@ const Message =  (props)=>{
 
     function removeMessage(id){  
         dispatch(deleteMessage(id,activeChat.id))
+            .then((res)=>{
+                if(res && res.response.data.error){
+                    console.log(res.response.data.error)
+                }else{
+                    socket.emit('client-push-message',{destinatary: currDestinatary.id, remittent: currUser.id})
+                }
+            })
     }
     
     return(

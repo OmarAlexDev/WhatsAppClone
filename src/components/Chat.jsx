@@ -42,7 +42,7 @@ const Chat = ()=>{
         messages_to_show = activeChat.messages.map((m,curr)=>{
             let isPrimary = m.remittent===currUser.id ? true : false
             return <div id={`message-${curr}`} key={nanoid()} className="message-row">
-                        <Message key={curr} primary={isPrimary} data={m}/>
+                        <Message key={curr} primary={isPrimary} data={m} currDestinatary={currDestinatary}/>
                     </div>
         }).reverse()
     }

@@ -1,7 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux"
 import { setCurrentSideElement } from "../reducers/sideBarReducer"
-import { obtainUsers } from "../reducers/usersReducer";
 import { setUserFilter } from "../reducers/filterReducer";
 import ContactLabel from "./ContactLabel";
 import EmptySearch from "./EmptySearch";
@@ -19,10 +18,6 @@ const SideChatCreator = () => {
     const activeSide_style = {
         display: sideBar.type === "chatCreator" ? "" : "none"
     }
-
-    React.useEffect(()=>{
-        dispatch(obtainUsers())
-    },[])
 
     function returnChatsMenu(){
         dispatch(setCurrentSideElement(null))

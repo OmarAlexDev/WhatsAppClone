@@ -1,12 +1,14 @@
 import React from "react"
 import { setCurrentSideElement } from "../reducers/sideBarReducer"
 import { setActiveChat } from "../reducers/activeChatReducer"
-import { setCurrentUser, updateUserInDb} from "../reducers/currentUserReducer"
+import { setCurrentUser, updateCurrentUser} from "../reducers/currentUserReducer"
 import { setChats } from "../reducers/chatsReducer"
 import { setUsers } from "../reducers/usersReducer"
 import { useSelector, useDispatch } from "react-redux"
+import { SocketContext } from "../context/socket"
 
 const SideUserInfo = () =>{
+    const socket = React.useContext(SocketContext)
     const dispatch = useDispatch()
     const sideBar = useSelector(state=>state.sideBar)
     const users = useSelector(state=>state.users)
@@ -44,10 +46,17 @@ const SideUserInfo = () =>{
             if(tempUser.username!==currUser.username && users.find(u=>u.username===tempUser.username)){
                 console.log('Username already in use')   
             }else{
-                dispatch(updateUserInDb(tempUser)) 
+                dispatch(updateCurrentUser(tempUser))
+                    .then(res=>{
+                        if(res && res.response.data.error){
+                            console.log(res.response.data.error)
+                        }else{
+                            socket.emit('client-update',{id: currUser.id})
+                        }
+                    })
             }  
         }else{
-            console.log("No change submitted")
+            //No change submitted
             setTempUsername(prev=>{ return {...prev, username: currUser.username, state: currUser.state, profileImage: currUser.profileImage}})
         }
     }

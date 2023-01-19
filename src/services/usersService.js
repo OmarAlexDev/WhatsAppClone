@@ -4,8 +4,13 @@ import tokenService from './tokenService'
 //const base_url = "http://localhost:3001/MINKAN/api/users"
 const base_url="/MINKAN/api/users"
 
-const get = async ()=>{
+const getAll = async ()=>{
     const response = await axios.get(base_url)
+    return response.data
+}
+
+const get = async (id)=>{
+    const response = await axios.get(`${base_url}/${id}`)
     return response.data
 }
 
@@ -20,4 +25,4 @@ const put = async (content)=>{
     return response.data
 }
 
-export default {get, post, put}
+export default {getAll, post, put, get}
