@@ -1,23 +1,21 @@
 import axios from 'axios'
 import tokenService from './tokenService'
-
-//const base_url="http://localhost:3001/MINKAN/api/chats"
-const base_url="/MINKAN/api/chats"
+import { paths } from '../constants'
 
 const get = async (id, otherId)=>{
     let response
     const config = {headers: {Authorization: tokenService.getToken()}}
     if(!otherId){
-        response = await axios.get(`${base_url}/fromUser/${id}`, config)
+        response = await axios.get(`${paths.CHATS}/fromUser/${id}`, config)
     }else{
-        response = await axios.get(`${base_url}/fromUser/${id}/byUser/${otherId}`, config)
+        response = await axios.get(`${paths.CHATS}/fromUser/${id}/byUser/${otherId}`, config)
     }
     return response.data
 }
 
 const remove = async (id)=>{
     const config = {headers: {Authorization: tokenService.getToken()}}
-    const response = await axios.delete(`${base_url}/${id}`, config)
+    const response = await axios.delete(`${paths.CHATS}/${id}`, config)
     return response.data
 }
 

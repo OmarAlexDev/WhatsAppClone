@@ -1,10 +1,8 @@
 import axios from 'axios'
-
-//const base_url="http://localhost:3001/MINKAN/api/login"
-const base_url="/MINKAN/api/login"
+import { paths } from '../constants'
 
 const post = async (content)=>{
-    const response = await axios.post(base_url,content)
+    const response = await axios.post(paths.LOGIN,content)
     return response.data
 }
 

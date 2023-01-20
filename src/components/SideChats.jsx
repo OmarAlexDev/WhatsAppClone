@@ -40,36 +40,35 @@ const SideChats = ()=>{
     React.useEffect(()=>{
         socket.on('connect', () => {
             console.log("Socket connected",socket.id)
-        
-            socket.on('database-update-chat',(args)=>{
-                if(args.destinatary===currUser.id){
-                    if(args.type==="message_update"){
-                        dispatch(updateChat(args.destinatary, args.remittent))
-                            .then(res=>{
-                                if(res && res.response.data.error){
-                                    console.log(res.response.data.error)
-                                }
-                            })
-                    }else if(args.type==="chat_deletion"){
-                        dispatch(removeChatFromChats(args.chat))
-                    }       
-                }   
-            }) 
-            socket.on('database-update-user',(args)=>{
-                dispatch(obtainUser(args.id))
-                    .then(res=>{
-                        if(res && res.response.data.error){
-                            console.log(res.response.data.error)
-                        }
-                    })
-            })
+        })
+
+        socket.on('database-update-chat',(args)=>{
+            console.log("Received change")
+            if(args.destinatary===currUser.id){
+                if(args.type==="message_update"){
+                    dispatch(updateChat(args.destinatary, args.remittent))
+                        .then(res=>{
+                            console.log(res)
+                        })
+                }else if(args.type==="chat_deletion"){
+                    dispatch(removeChatFromChats(args.chat))
+                }       
+            }   
+        }) 
+
+        socket.on('database-update-user',(args)=>{
+            console.log("Received change")
+            dispatch(obtainUser(args.id))
+                .then(res=>{
+                    console.log(res)
+                })
         })
         
         socket.on('disconnect', () => {
             console.log("Socket disconnected")
         })
         
-    },[socket])
+    },[currUser])
 
     React.useEffect(()=>{
         if(activeChat!==null){
