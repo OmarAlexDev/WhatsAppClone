@@ -28,7 +28,7 @@ const App = ()=>{
       <Routes>
         <Route path="/" element={currUser=== null ? <Navigate replace to="/login" /> : <Navigate replace to="/chats" />}/>
         <Route path="/login" element={<Login />}/>
-        <Route path="/chats" element={ currUser=== null ? <Navigate replace to="/login" /> :
+        <Route path="/chats" element={
           <div id='main'>
             <Sidebar />
             <Chat />

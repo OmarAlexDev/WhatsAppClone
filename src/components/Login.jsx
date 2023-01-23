@@ -41,7 +41,7 @@ const Login = () =>{
                 window.localStorage.setItem('loggedWAUser',parsedUser)
                 tokenService.setToken(res.token)
                 setUser({username:"",password:"",rePassword:""})
-                navigate('/')
+                navigate('/chats')
             }catch(err){
                 console.log(err.response.data)
             }

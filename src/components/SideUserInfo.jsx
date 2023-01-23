@@ -5,9 +5,11 @@ import { setCurrentUser, updateCurrentUser} from "../reducers/currentUserReducer
 import { setChats } from "../reducers/chatsReducer"
 import { setUsers } from "../reducers/usersReducer"
 import { useSelector, useDispatch } from "react-redux"
+import {useNavigate} from 'react-router-dom'
 import { SocketContext } from "../context/socket"
 
 const SideUserInfo = () =>{
+    const navigate = useNavigate()
     const socket = React.useContext(SocketContext)
     const dispatch = useDispatch()
     const sideBar = useSelector(state=>state.sideBar)
@@ -38,6 +40,7 @@ const SideUserInfo = () =>{
         dispatch(setChats([]))
         dispatch(setCurrentSideElement(null))
         dispatch(setUsers([]))
+        navigate('/login')
     }
 
     function UpdateUser(target){

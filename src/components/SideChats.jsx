@@ -43,7 +43,6 @@ const SideChats = ()=>{
         })
 
         socket.on('database-update-chat',(args)=>{
-            console.log("Received change")
             if(args.destinatary===currUser.id){
                 if(args.type==="message_update"){
                     dispatch(updateChat(args.destinatary, args.remittent))
@@ -57,7 +56,6 @@ const SideChats = ()=>{
         }) 
 
         socket.on('database-update-user',(args)=>{
-            console.log("Received change")
             dispatch(obtainUser(args.id))
                 .then(res=>{
                     console.log(res)
